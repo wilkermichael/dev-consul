@@ -6,6 +6,13 @@
 * Start Kind cluster `kind create cluster`
 * Run ./build-update-values.sh to build latest Consul and Consul-K8s Control-Plane, push them to dockerhub and then update the SHAs in the `values.yaml`
 
+### Setup Enterprise
+* Run 
+```shell
+secret=$(cat /Users/mwilkerson/dev/michael-dev-config/license/license.txt)
+kubectl create secret generic consul-ent-license --from-literal="key=${secret}"
+````
+
 ### Installing using helm
 ```bash
 helm install consul -f values.yaml ~/dev/consul-k8s/charts/consul
