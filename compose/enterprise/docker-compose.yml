@@ -15,7 +15,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
 
   # Mesh Gateway for DC1
@@ -32,7 +32,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "sh -c '/conf/startgw.sh /conf/dc1a1.hcl 10.1.10.1:8301 10.10.10.2' "
 
   # Service for DC1
@@ -52,7 +52,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc1a2.hcl 10.1.10.1:8301 /conf/dc1svc1.hcl dc1-svc1' "
 
   # Service 2 for DC1
@@ -72,7 +72,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc1a3.hcl 10.1.10.1:8301 /conf/dc1svc2.hcl dc1-svc2' "
 
 
@@ -92,7 +92,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "consul agent -dev -bind=10.2.10.1 -config-file=/conf/dc2s1.hcl"
 
   mgw2:
@@ -110,7 +110,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "sh -c '/conf/startgw.sh /conf/dc2a1.hcl 10.2.10.1:8301 10.10.20.2' "
 
   dc2svc1:
@@ -126,7 +126,7 @@ services:
       - ./license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: /license/license.txt
+      CONSUL_LICENSE_PATH: ../../license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.2.10.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
 
 networks:
