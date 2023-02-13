@@ -1,1 +1,1 @@
-Copy license here
+Copy license here use name `licence.txt`
