@@ -3,6 +3,7 @@
 ## Setup
 * Navigate to enterprise/ or oss/
 * Edit the image/build.sh to match your environment
+* If using enterprise copy a license (license.txt) to the license directory at the root of this repo
 
 ## Running
 * go to the root dir

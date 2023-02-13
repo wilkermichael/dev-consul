@@ -12,10 +12,10 @@ services:
     ports:
       - "8500:8500"
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
 
   # Mesh Gateway for DC1
@@ -29,10 +29,10 @@ services:
       wan:
         ipv4_address: 10.10.10.2
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "sh -c '/conf/startgw.sh /conf/dc1a1.hcl 10.1.10.1:8301 10.10.10.2' "
 
   # Service for DC1
@@ -49,10 +49,10 @@ services:
       - "9001:9001" # The service port forwards
       - "19001:19000" # The Envoy ports forwards
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc1a2.hcl 10.1.10.1:8301 /conf/dc1svc1.hcl dc1-svc1' "
 
   # Service 2 for DC1
@@ -69,10 +69,10 @@ services:
       - "9002:9002" # The service port forwards
       - "19003:19000" # The Envoy ports forwards
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc1a3.hcl 10.1.10.1:8301 /conf/dc1svc2.hcl dc1-svc2' "
 
 
@@ -89,10 +89,10 @@ services:
     ports:
       - "9500:8500"
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "consul agent -dev -bind=10.2.10.1 -config-file=/conf/dc2s1.hcl"
 
   mgw2:
@@ -107,10 +107,10 @@ services:
     ports:
       - "19002:19000"
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "sh -c '/conf/startgw.sh /conf/dc2a1.hcl 10.2.10.1:8301 10.10.20.2' "
 
   dc2svc1:
@@ -123,10 +123,10 @@ services:
       wan:
         ipv4_address: 10.10.20.3
     volumes:
-      - ./license/:/license/
+      - ../../license/:/license/
       - ./conf/:/conf/
     environment:
-      CONSUL_LICENSE_PATH: ../../license/license.txt
+      CONSUL_LICENSE_PATH: /license/license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.2.10.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
 
 networks:
