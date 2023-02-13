@@ -1,0 +1,18 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ProxyDefaults
+metadata:
+  name: global
+spec:
+  config:
+    protocol: "tcp"
+  envoyExtensions:
+    - name: builtin/aws/lambda
+      required: false
+      arguments:
+        payloadPassthrough: false
+        region: us-west-2
+    - name: builtin/aws/lambda
+      required: false
+      arguments:
+        payloadPassthrough: false
+        region: us-west-2

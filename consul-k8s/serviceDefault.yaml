@@ -1,0 +1,18 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: envoy-extensions
+spec:
+  protocol: http
+  balanceInboundConnections: "exact_balance"
+  envoyExtensions:
+    - name: builtin/aws/lambda
+      required: false
+      arguments:
+        payloadPassthrough: false
+        region: us-west-2
+    - name: builtin/aws/lambda
+      required: false
+      arguments:
+        payloadPassthrough: false
+        region: us-east-1
