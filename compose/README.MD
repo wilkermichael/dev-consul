@@ -6,7 +6,7 @@
 * If using enterprise copy a license (license.txt) to the license directory at the root of this repo
 
 ## Running
-* go to the root dir
+* go to the compose dir
 * run `./build-image.sh oss` or `./build-image.sh enterprise` if you need to build a new Consul image
 * run
   * docker compose down to delete the old env
