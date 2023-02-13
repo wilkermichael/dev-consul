@@ -1,6 +1,5 @@
 token
-consul_license.txt
-license.txt
+*license*
 consul
 forwardsrv
 .idea
