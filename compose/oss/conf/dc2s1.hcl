@@ -49,3 +49,12 @@ config_entries {
   }
 
 }
+
+// XXX
+//primary_datacenter = "dc1"
+serf_wan = "10.10.20.1"
+advertise_addr_wan = "10.10.20.1"
+//translate_wan_addrs = true
+//bind_addr = "10.2.10.1"
+bind_addr = "0.0.0.0"
+advertise_addr = "10.2.10.1"

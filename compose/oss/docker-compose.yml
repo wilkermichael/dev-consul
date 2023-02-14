@@ -3,6 +3,7 @@ services:
   dc1s1:
     image: dev-consul
     container_name: dc1s1
+    hostname: dc1s1
     privileged: true
     networks:
       dc1:
@@ -13,7 +14,8 @@ services:
       - "8500:8500"
     volumes:
       - ./conf/:/conf/
-    command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    #command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    command: "consul agent -dev -config-file=/conf/dc1s1.hcl"
 
 # Mesh Gateway for DC1
   mgw1:
@@ -29,7 +31,7 @@ services:
       - ./conf/:/conf/
     command: "sh -c '/conf/startgw.sh /conf/dc1a1.hcl 10.1.10.1:8301 10.10.10.2' "
 
-# Service for DC1
+# Service1 for DC1
   dc1svc1:
     image: dev-consul
     container_name: dc1svc1
@@ -68,6 +70,7 @@ services:
   dc2s1:
     image: dev-consul
     container_name: dc2s1
+    hostname: dc2s1
     privileged: true
     networks:
       dc2:
@@ -78,7 +81,8 @@ services:
       - "9500:8500"
     volumes:
       - ./conf/:/conf/
-    command: "consul agent -dev -bind=10.2.10.1 -config-file=/conf/dc2s1.hcl"
+    #command: "consul agent -dev -bind=10.2.10.1 -config-file=/conf/dc2s1.hcl"
+    command: "consul agent -dev -config-file=/conf/dc2s1.hcl"
 
   mgw2:
     image: dev-consul

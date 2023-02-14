@@ -9,7 +9,12 @@ serviceConfigVar=$3
 serviceNameVar=$4
 
 sleep 5
-consul agent -bind '{{ GetInterfaceIP "eth0" }}' -config-file="$agentConfigVar" -retry-join="$retryJoinVar" &
+
+consul agent \
+  -bind '{{ GetInterfaceIP "eth0" }}' \
+  -config-file="$agentConfigVar" \
+  -retry-join="$retryJoinVar" &
+
 sleep 10
 forwardsrv 0.0.0.0:9001 "$serviceNameVar" &
 
