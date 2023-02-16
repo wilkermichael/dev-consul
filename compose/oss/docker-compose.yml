@@ -20,6 +20,8 @@ services:
 
 # Mesh Gateway for DC1
   mgw1:
+    # may take a couple of restarts to eventually be happy
+    restart: unless-stopped
     image: dev-consul
     container_name: dc1mgw1
     privileged: true
@@ -87,6 +89,7 @@ services:
     command: "consul agent -config-file=/conf/dc2s1.hcl"
 
   mgw2:
+    # may take a couple restarts to eventually be happy
     restart: unless-stopped
     image: dev-consul
     container_name: dc2mgw1
@@ -103,6 +106,8 @@ services:
     command: "sh -c '/conf/start-wanfed-gw.sh /conf/dc2a1.hcl 10.2.10.1:8301 10.10.20.2:8443 10.2.10.2:8443'"
 
   dc2svc1:
+    # may take a coupel of restarts to eventually be happy
+    restart: unless-stopped
     image: dev-consul
     container_name: dc2svc1
     privileged: true
