@@ -36,6 +36,7 @@ services:
 
 # Service1 for DC1
   dc1svc1:
+    restart: unless-stopped  
     image: dev-consul
     container_name: dc1svc1
     privileged: true
@@ -53,6 +54,7 @@ services:
 
   # Service 2 for DC1
   dc1svc2:
+    restart: unless-stopped
     image: dev-consul
     container_name: dc1svc2
     privileged: true

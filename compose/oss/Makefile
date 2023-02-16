@@ -73,3 +73,7 @@ test:
 # dc2s1.dc2  10.2.10.1:8302  alive   server  1.15.0dev  2         dc2  default    <all>	
 	curl -s "http://localhost:8500/v1/catalog/services?dc=dc2" | jq .
 	curl -s "http://localhost:9500/v1/catalog/services?dc=dc1" | jq .
+
+.PHONY: follow-test
+follow-test:
+	while true; do make test; sleep 5; done

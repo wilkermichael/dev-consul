@@ -71,9 +71,13 @@ connect {
   enable_mesh_gateway_wan_federation = true
 }
 
-ca_file = "/conf/certs/consul-agent-ca.pem"
-cert_file = "/conf/certs/dc2-server-consul-0.pem"
-key_file = "/conf/certs/dc2-server-consul-0-key.pem"
+tls {
+  defaults {
+    ca_file = "/conf/certs/consul-agent-ca.pem"
+    cert_file = "/conf/certs/dc2-server-consul-0.pem"
+    key_file = "/conf/certs/dc2-server-consul-0-key.pem"
+  }
+}
 
 auto_encrypt {
   allow_tls = true

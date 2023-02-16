@@ -89,9 +89,13 @@ connect {
 # symmetric gossip encryption key
 encrypt = "78wscxN/AOgTltBXdAsKsBLuKqS0FIErDnElfvLSink="
 
-ca_file = "/conf/certs/consul-agent-ca.pem"
-cert_file = "/conf/certs/dc1-server-consul-0.pem"
-key_file = "/conf/certs/dc1-server-consul-0-key.pem"
+tls {
+  defaults {
+    ca_file = "/conf/certs/consul-agent-ca.pem"
+    cert_file = "/conf/certs/dc1-server-consul-0.pem"
+    key_file = "/conf/certs/dc1-server-consul-0-key.pem"
+  }
+}
 
 auto_encrypt {
   allow_tls = true

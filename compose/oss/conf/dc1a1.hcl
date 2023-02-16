@@ -21,7 +21,11 @@ primary_datacenter = "dc1"
 # symmetric gossip encryption key
 encrypt = "78wscxN/AOgTltBXdAsKsBLuKqS0FIErDnElfvLSink="
 
-ca_file = "/conf/certs/consul-agent-ca.pem"
+tls {
+  defaults {
+    ca_file = "/conf/certs/consul-agent-ca.pem"
+  }
+}
 
 auto_encrypt {
   tls = true
