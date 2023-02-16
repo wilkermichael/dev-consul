@@ -87,6 +87,7 @@ services:
     command: "consul agent -config-file=/conf/dc2s1.hcl"
 
   mgw2:
+    restart: unless-stopped
     image: dev-consul
     container_name: dc2mgw1
     privileged: true

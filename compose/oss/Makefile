@@ -53,6 +53,23 @@ certs:
 	pushd
 	consul tls ca create
 	rm -v dc1* dc2*
-	consul tls cert create -server -dc=dc2 -domain=consul -additional-dnsname="*.dc1.consul" -additional-dnsname="*.dc2.consul" -additional-dnsname="*.*.dc1.consul" -additional-dnsname="*.*.dc2.consul"
+	consul tls cert create -server -dc=dc2 -domain=consul -additional-dnsname="*.dc1.consul" -additional-dnsname="*.dc2.consul" -additional-dnsname="*.*.dc1.consul" -additional-dnsname="*.*.dc2.consul" -additional-dnsname="dc2s1.server.dc2.consul"
 	consul tls cert create -server -dc=dc1 -domain=consul -additional-dnsname="*.dc1.consul" -additional-dnsname="*.dc2.consul" -additional-dnsname="*.*.dc1.consul" -additional-dnsname="*.*.dc2.consul" -additional-dnsname="dc1s1.server.dc1.consul"
 	popd
+
+.PHONY: test
+test: 
+# test boot and startup of scenario is good
+	docker-compose exec dc1s1 consul members -wan
+# expect:
+# Node       Address         Status  Type    Build      Protocol  DC   Partition  Segment
+# dc1s1.dc1  10.1.10.1:8302  alive   server  1.15.0dev  2         dc1  default    <all>
+# dc2s1.dc2  10.2.10.1:8302  alive   server  1.15.0dev  2         dc2  default    <all>	
+
+	docker-compose exec dc2s1 consul members -wan
+# expect: 
+# Node       Address         Status  Type    Build      Protocol  DC   Partition  Segment
+# dc1s1.dc1  10.1.10.1:8302  alive   server  1.15.0dev  2         dc1  default    <all>
+# dc2s1.dc2  10.2.10.1:8302  alive   server  1.15.0dev  2         dc2  default    <all>	
+	curl -s "http://localhost:8500/v1/catalog/services?dc=dc2" | jq .
+	curl -s "http://localhost:9500/v1/catalog/services?dc=dc1" | jq .

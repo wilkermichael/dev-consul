@@ -104,9 +104,12 @@ acl = {
 
   tokens {
     initial_management = "19165fdf-16db-c283-dec2-40c5942f0319"
-    // agent  = "1d0b566d-8817-b2b4-0fca-9b29ceb1d5e7"
     agent = "19165fdf-16db-c283-dec2-40c5942f0319"
   }  
+}
+
+ui_config {
+  enabled = true
 }
 
 // $ consul acl bootstrap

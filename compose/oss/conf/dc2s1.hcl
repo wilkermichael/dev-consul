@@ -88,5 +88,8 @@ acl = {
     initial_management = "19165fdf-16db-c283-dec2-40c5942f0319"
     agent = "19165fdf-16db-c283-dec2-40c5942f0319"
   }  
+}
 
+ui_config {
+  enabled = true
 }
