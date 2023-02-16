@@ -3,7 +3,7 @@ datacenter = "dc1"
 node_name = "dc1s1"
 server = true
 log_level = "INFO"
-data_dir = "/consul-data"
+data_dir = "/conf/data/dc1s1"
 
 client_addr = "0.0.0.0"
 
@@ -72,10 +72,68 @@ config_entries {
 }
 
 // XXX
+bootstrap_expect = 1
 primary_datacenter = "dc1"
-serf_wan = "10.10.10.1"
-advertise_addr_wan = "10.10.10.1"
-translate_wan_addrs = true
+//serf_wan = "10.10.10.1"
+//advertise_addr_wan = "10.10.10.1"
+//translate_wan_addrs = true
 //bind_addr = "10.1.10.1"
 bind_addr = "0.0.0.0"
 advertise_addr = "10.1.10.1"
+
+connect {
+  enabled = true
+  enable_mesh_gateway_wan_federation = true
+}
+
+# symmetric gossip encryption key
+encrypt = "78wscxN/AOgTltBXdAsKsBLuKqS0FIErDnElfvLSink="
+
+ca_file = "/conf/certs/consul-agent-ca.pem"
+cert_file = "/conf/certs/dc1-server-consul-0.pem"
+key_file = "/conf/certs/dc1-server-consul-0-key.pem"
+
+auto_encrypt {
+  allow_tls = true
+}
+
+acl = {
+  enabled = true
+  default_policy = "allow"
+  enable_token_persistence = true
+
+  tokens {
+    initial_management = "19165fdf-16db-c283-dec2-40c5942f0319"
+    // agent  = "1d0b566d-8817-b2b4-0fca-9b29ceb1d5e7"
+    agent = "19165fdf-16db-c283-dec2-40c5942f0319"
+  }  
+}
+
+// $ consul acl bootstrap
+// AccessorID:       745af7f4-ea98-c376-9d86-9bbb772aeaed
+// SecretID:         19165fdf-16db-c283-dec2-40c5942f0319
+// Description:      Bootstrap Token (Global Management)
+// Local:            false
+// Create Time:      2023-02-15 22:17:48.75134217 +0000 UTC
+// Policies:
+//    00000000-0000-0000-0000-000000000001 - global-management
+
+
+// # consul acl token create -description "dc1s1 agent token" -node-identity "dc1s1:dc1"
+// AccessorID:       23e3fc83-90c4-47d3-1c4e-7fb7e5fb0760
+// SecretID:         b41ee9f0-c0b2-27a4-7a98-d05882d03d69
+// Description:      dc1s1 agent token
+// Local:            false
+// Create Time:      2023-02-15 23:52:29.743328467 +0000 UTC
+// Node Identities:
+//    dc1s1 (Datacenter: dc1)
+
+// $ consul acl token create -description "dc1s1 agent token" \
+//   -node-identity "dc1s1:dc1"
+// AccessorID:       a52da2d9-6a4c-9e3d-7182-a45fd2cc8afe
+// SecretID:         1d0b566d-8817-b2b4-0fca-9b29ceb1d5e7
+// Description:      dc1s1 agent token
+// Local:            false
+// Create Time:      2023-02-15 22:24:04.447455553 +0000 UTC
+// Node Identities:
+//    dc1s1 (Datacenter: dc1)
