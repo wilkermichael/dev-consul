@@ -97,3 +97,5 @@ acl = {
 ui_config {
   enabled = true
 }
+
+leave_on_terminate = true
