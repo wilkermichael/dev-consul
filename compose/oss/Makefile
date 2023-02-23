@@ -77,3 +77,7 @@ test:
 .PHONY: follow-test
 follow-test:
 	while true; do make test; sleep 5; done
+
+.PHONY: build
+build:
+	sh -c "cd .. && ./build-image.sh oss"

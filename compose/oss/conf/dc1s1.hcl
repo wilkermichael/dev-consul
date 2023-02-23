@@ -116,6 +116,8 @@ ui_config {
   enabled = true
 }
 
+//log_level = "TRACE"
+
 // $ consul acl bootstrap
 // AccessorID:       745af7f4-ea98-c376-9d86-9bbb772aeaed
 // SecretID:         19165fdf-16db-c283-dec2-40c5942f0319
@@ -144,3 +146,70 @@ ui_config {
 // Create Time:      2023-02-15 22:24:04.447455553 +0000 UTC
 // Node Identities:
 //    dc1s1 (Datacenter: dc1)
+
+
+// force-leave -wan -prune dc2s1.dc2
+// dc1s1      | 2023-02-17T16:57:57.043Z [INFO]  agent: (WAN) Force leaving node: node=dc2s1.dc2
+// dc1s1      | 2023-02-17T16:57:57.043Z [INFO]  agent.server.serf.wan: serf: EventMemberReap (forced): dc2s1.dc2 10.2.10.1
+// dc1s1      | 2023-02-17T16:57:57.043Z [DEBUG] agent.http: Request finished: method=PUT url="/v1/agent/force-leave/dc2s1.dc2?prune=1&wan=1" from=127.0.0.1:45212 latency="78.833µs"
+// dc1s1      | 2023-02-17T16:57:57.043Z [INFO]  agent.server: Handled event for server in area: event=member-reap server=dc2s1.dc2 area=wan
+
+// docker-compose stop dc2a1
+// dc1s1      |            ZZZ serfWAN &{clock:{counter:61} eventClock:{counter:1} queryClock:{counter:1} broadcasts:0x4000691da0 
+// config:0x40002b9c80 
+// failedMembers:[] 
+// --> leftMembers:[0x40008aa7e0] 
+// memberlist:0x40005ba420 
+// memberLock:{w:{state:0 sema:0} writerSem:0 readerSem:0 readerCount:0 readerWait:0} 
+// --> members:map[dc1s1.dc1:0x40005d6620 dc2s1.dc2:0x40008aa7e0] 
+// recentIntents:map[] eventBroa
+
+// dc1s1: consul members -leave -prune dc2s1.dc2
+// dc1s1      |            ZZZ serfWAN &{clock:{counter:62} eventClock:{counter:1} queryClock:{counter:1} broadcasts:0x4000691da0 
+// config:0x40002b9c80 
+// failedMembers:[] 
+// --> leftMembers:[] 
+// memberlist:0x40005ba420 
+// memberLock:{w:{state:0 sema:0} writerSem:0 readerSem:0 readerCount:0 readerWait:0} 
+// --> members:map[dc1s1.dc1:0x40005d6620] 
+// recentIntents:map[] eventBroadcasts:0x4000691dd0 
+
+// dc1s1      |
+// dc1s1      | 2023-02-17T22:01:52.529Z [ERROR] agent.server.rpc: goroutine 1574 [running]:
+// dc1s1      | runtime/debug.Stack()
+// dc1s1      |    /opt/homebrew/Cellar/go/1.19.6/libexec/src/runtime/debug/stack.go:24 +0x64
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).forwardDC(0x40010c6400, {0x30350bb, 0x14}, {0x4000f6e37d, 0x3}, {0x2f9a0a0, 0x40003941e0}, {0x2d92ca0, 0x4000391e60})
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:837 +0x628
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).ForwardRPC.func1({0x4000f6e37d?, 0x3ae96a8?})
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:618 +0x58
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).forwardRequestToOtherDatacenter(0x40010c6400, {0x3ae96a8, 0x40003941e0}, 0x4001153388)
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:717 +0x1f0
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).forwardRPC(0x4000d86720?, {0x3ae96a8, 0x40003941e0}, 0x3?, 0x4?)
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:670 +0x2c
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).ForwardRPC(0x4001153408?, {0x30350bb?, 0x4000d86750?}, {0x3ae96a8?, 0x40003941e0?}, {0x2d92ca0?, 0x4000391e60?})
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:624 +0xb4
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Internal).ServiceDump(0x4000f99308, 0x40003941e0, 0x4000391e60)
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/internal_endpoint.go:138 +0x54
+// dc1s1      | reflect.Value.call({0x4000ac4fc0?, 0x400000f4f8?, 0x4001153ba8?}, {0x30046f9, 0x4}, {0x4001153c78, 0x3, 0x4000000042?})
+// dc1s1      |    /opt/homebrew/Cellar/go/1.19.6/libexec/src/reflect/value.go:584 +0x688
+// dc1s1      | reflect.Value.Call({0x4000ac4fc0?, 0x400000f4f8?, 0x4001153bf8?}, {0x4001153c78?, 0x4001153be8?, 0x33b40?})
+// dc1s1      |    /opt/homebrew/Cellar/go/1.19.6/libexec/src/reflect/value.go:368 +0x90
+// dc1s1      | github.com/hashicorp/consul-net-rpc/net/rpc.(*service).call(0x4000ab7e80, 0x7acc0?, 0x0?, 0x0, 0x4000f57800, 0x2b19c?, {0x2f9a0a0?, 0x40003941e0?, 0xc196ca234ece?}, {0x2d92ca0?, ...}, ...)
+// dc1s1      |    /Users/semirpatel/go/pkg/mod/github.com/hashicorp/consul-net-rpc@v0.0.0-20221205195236-156cfab66a69/net/rpc/server.go:409 +0x210
+// dc1s1      | github.com/hashicorp/consul-net-rpc/net/rpc.(*Server).ServeRequest.func1()
+// dc1s1      |    /Users/semirpatel/go/pkg/mod/github.com/hashicorp/consul-net-rpc@v0.0.0-20221205195236-156cfab66a69/net/rpc/server.go:490 +0x54
+// dc1s1      | github.com/hashicorp/consul/agent/rpc/middleware.GetNetRPCInterceptor.func1({0x4001271038, 0x14}, {0x2f9a0a0?, 0x40003941e0?, 0x4001153eb8?}, {0x1678c?, 0x3a98560?, 0x3?}, 0x4000518540)
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/rpc/middleware/interceptors.go:157 +0x60
+// dc1s1      | github.com/hashicorp/consul-net-rpc/net/rpc.(*Server).ServeRequest(0x4000408900, {0x3ae6080?, 0x4000b39180})
+// dc1s1      |    /Users/semirpatel/go/pkg/mod/github.com/hashicorp/consul-net-rpc@v0.0.0-20221205195236-156cfab66a69/net/rpc/server.go:494 +0x2d0
+// dc1s1      | github.com/hashicorp/consul/agent/consul.(*Server).handleConsulConn(0x40010c6400, {0x3aee590?, 0x4000b50f90})
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:422 +0xfc
+// dc1s1      | created by github.com/hashicorp/consul/agent/consul.(*Server).handleMultiplexV2
+// dc1s1      |    /Users/semirpatel/git/hashicorp/consul/agent/consul/rpc.go:406 +0x334
+// dc1s1      |
+
+// Unhandled error in debug adapter: TypeError: Cannot read properties of undefined (reading 'addr')
+//     at GoDebugSession.convertDebugVariableToProtocolVariable (/Users/semirpatel/.vscode/extensions/golang.go-0.37.1/dist/debugAdapter.js:16728:25)
+//     at /Users/semirpatel/.vscode/extensions/golang.go-0.37.1/dist/debugAdapter.js:16268:55
+//     at process.processTicksAndRejections (node:internal/process/task_queues:96:5)
+//     at async Promise.all (index 6)

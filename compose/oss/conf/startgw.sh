@@ -19,5 +19,6 @@ consul connect envoy \
   -admin-bind=0.0.0.0:19000 \
   -mesh-gateway \
   -register \
+  -address "$lanAddress"
   -wan-address="$wanAddress" \
   -expose-servers

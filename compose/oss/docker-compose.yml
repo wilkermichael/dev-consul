@@ -12,11 +12,13 @@ services:
         ipv4_address: 10.10.10.1
     ports:
       - "8500:8500"
+      - "2345:2345"
     volumes:
       - ./conf/:/conf/
     #command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
     #command: "consul agent -dev -config-file=/conf/dc1s1.hcl"
-    command: "consul agent -config-file=/conf/dc1s1.hcl"
+    #command: "consul agent -config-file=/conf/dc1s1.hcl"
+    command: "/root/go/bin/dlv exec /usr/local/bin/consul --continue --accept-multiclient --headless --listen=:2345 --api-version=2 --log -- agent -config-file=/conf/dc1s1.hcl"
 
 # Mesh Gateway for DC1
   mgw1:
@@ -25,6 +27,8 @@ services:
     image: dev-consul
     container_name: dc1mgw1
     privileged: true
+    ports:
+      - "2346:2346"
     networks:
       dc1:
         ipv4_address: 10.1.10.2

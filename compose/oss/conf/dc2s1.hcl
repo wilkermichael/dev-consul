@@ -99,3 +99,5 @@ ui_config {
 }
 
 leave_on_terminate = true
+
+rejoin_after_leave = false
