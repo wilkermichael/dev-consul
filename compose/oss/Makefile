@@ -14,34 +14,25 @@ follow:
 follow-dc1s1:
 	while true; do docker-compose logs --follow --tail=0 dc1s1; sleep 2; done
 
-.PHONY: follow-dc2s1
-follow-dc2s1:
-	while true; do docker-compose logs --follow --tail=0 dc2s1; sleep 2; done
+.PHONY: follow-dc1igw1
+follow-dc1igw1:
+	while true; do docker-compose logs --follow --tail=0 dc1igw1; sleep 2; done
 
-.PHONY: follow-mgw1
-follow-mgw1:
-	while true; do docker-compose logs --follow --tail=0 mgw1; sleep 2; done
-
-.PHONY: follow-mgw2
-follow-mgw2:
-	while true; do docker-compose logs --follow --tail=0 mgw2; sleep 2; done
+.PHONY: follow-dc1igw1
+follow-dc1svc1:
+	while true; do docker-compose logs --follow --tail=0 dc1svc1; sleep 2; done
 
 .PHONY: shell-dc1s1
 shell-dc1s1:
 	docker-compose exec dc1s1 /bin/bash
 
-.PHONY: shell-dc2s1
-shell-dc2s1:
-	docker-compose exec dc2s1 /bin/bash	
+.PHONY: shell-dc1igw1
+shell-dc1igw1:
+	docker-compose exec dc1igw1 /bin/bash
 
-.PHONY: shell-mgw1
-shell-mgw1:
-	docker-compose exec mgw1 /bin/bash
-
-.PHONY: shell-mgw2
-shell-mgw2:
-	docker-compose exec mgw2 /bin/bash
-
+.PHONY: shell-dc1svc1
+shell-dc1svc1:
+	docker-compose exec dc1svc1 /bin/bash
 
 .PHONY: certs
 certs:
@@ -81,3 +72,7 @@ follow-test:
 .PHONY: build
 build:
 	sh -c "cd .. && ./build-image.sh oss"
+
+.PHONY: clean
+clean:
+	rm -rfv conf/data/*

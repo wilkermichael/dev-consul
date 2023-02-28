@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 RUN apt-get update \
-  && apt-get install -y iptables curl psmisc htop iproute2 inetutils-ping ngrep less golang
+  && apt-get install -y iptables curl psmisc htop iproute2 inetutils-ping ngrep less golang tree
 RUN go install github.com/go-delve/delve/cmd/dlv@latest  
 ENV ENVOY_VERSION_STRING=1.23.1
 #ENV FUNC_E_PLATFORM=linux/amd64

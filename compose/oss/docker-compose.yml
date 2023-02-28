@@ -8,27 +8,31 @@ services:
     networks:
       dc1:
         ipv4_address: 10.1.10.1
-      wan:
-        ipv4_address: 10.10.10.1
+      # wan:
+      #   ipv4_address: 10.10.10.1
     ports:
       - "8500:8500"
       - "2345:2345"
     volumes:
       - ./conf/:/conf/
+    environment:
+      # mute annoying latest version check on startup
+      - CHECKPOINT_DISABLE=true 
     #command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
     #command: "consul agent -dev -config-file=/conf/dc1s1.hcl"
     #command: "consul agent -config-file=/conf/dc1s1.hcl"
     command: "/root/go/bin/dlv exec /usr/local/bin/consul --continue --accept-multiclient --headless --listen=:2345 --api-version=2 --log -- agent -config-file=/conf/dc1s1.hcl"
 
-# Mesh Gateway for DC1
-  mgw1:
-    # may take a couple of restarts to eventually be happy
+# Ingress gateway for DC1
+  dc1igw1:
     restart: unless-stopped
     image: dev-consul
-    container_name: dc1mgw1
+    container_name: dc1igw1
     privileged: true
+    environment:
+      - CHECKPOINT_DISABLE=true 
     ports:
-      - "2346:2346"
+      - "4567:4567"
     networks:
       dc1:
         ipv4_address: 10.1.10.2
@@ -36,7 +40,7 @@ services:
         ipv4_address: 10.10.10.2
     volumes:
       - ./conf/:/conf/
-    command: "sh -c '/conf/start-wanfed-gw.sh /conf/dc1a1.hcl 10.1.10.1:8301 10.10.10.2:8443 10.1.10.2:8443'"
+    command: "sh -c '/conf/start-ingress-gw.sh /conf/dc1a1.hcl 10.1.10.1:8301'"
 
 # Service1 for DC1
   dc1svc1:
@@ -44,11 +48,11 @@ services:
     image: dev-consul
     container_name: dc1svc1
     privileged: true
+    environment:
+      - CHECKPOINT_DISABLE=true 
     networks:
       dc1:
         ipv4_address: 10.1.10.3
-      wan:
-        ipv4_address: 10.10.10.3
     ports:
       - "9001:9001" # The service port forwards
       - "19001:19000" # The Envoy ports forwards
@@ -56,87 +60,12 @@ services:
       - ./conf/:/conf/
     command: "sh -c '/conf/startsvc.sh /conf/dc1a2.hcl 10.1.10.1:8301 /conf/dc1svc1.hcl dc1-svc1' "
 
-  # Service 2 for DC1
-  dc1svc2:
-    restart: unless-stopped
-    image: dev-consul
-    container_name: dc1svc2
-    privileged: true
-    networks:
-      dc1:
-        ipv4_address: 10.1.10.4
-      wan:
-        ipv4_address: 10.10.10.4
-    ports:
-      - "9002:9002" # The service port forwards
-      - "19003:19000" # The Envoy ports forwards
-    volumes:
-      - ./conf/:/conf/
-    command: "sh -c '/conf/startsvc.sh /conf/dc1a3.hcl 10.1.10.1:8301 /conf/dc1svc2.hcl dc1-svc2' "
-
-
-# Datacenter 2 (DC2)
-  dc2s1:
-    image: dev-consul
-    container_name: dc2s1
-    hostname: dc2s1
-    privileged: true
-    networks:
-      dc2:
-        ipv4_address: 10.2.10.1
-      wan:
-        ipv4_address: 10.10.20.1
-    ports:
-      - "9500:8500"
-    volumes:
-      - ./conf/:/conf/
-    #command: "consul agent -dev -bind=10.2.10.1 -config-file=/conf/dc2s1.hcl"
-    #command: "consul agent -dev -config-file=/conf/dc2s1.hcl"
-    command: "consul agent -config-file=/conf/dc2s1.hcl"
-
-  mgw2:
-    # may take a couple restarts to eventually be happy
-    restart: unless-stopped
-    image: dev-consul
-    container_name: dc2mgw1
-    privileged: true
-    networks:
-      dc2:
-        ipv4_address: 10.2.10.2
-      wan:
-        ipv4_address: 10.10.20.2
-    ports:
-      - "19002:19000"
-    volumes:
-      - ./conf/:/conf/
-    command: "sh -c '/conf/start-wanfed-gw.sh /conf/dc2a1.hcl 10.2.10.1:8301 10.10.20.2:8443 10.2.10.2:8443'"
-
-  dc2svc1:
-    # may take a coupel of restarts to eventually be happy
-    restart: unless-stopped
-    image: dev-consul
-    container_name: dc2svc1
-    privileged: true
-    networks:
-      dc2:
-        ipv4_address: 10.2.10.3
-      wan:
-        ipv4_address: 10.10.20.3
-    volumes:
-      - ./conf/:/conf/
-    command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.2.10.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
-
 networks:
   dc1:
     driver: bridge
     ipam:
       config:
         - subnet: 10.1.0.0/16
-  dc2:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.2.0.0/16
   wan:
     driver: bridge
     ipam:

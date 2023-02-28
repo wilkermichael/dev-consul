@@ -5,22 +5,22 @@ service {
 
   connect {
     sidecar_service {
-      proxy {
-        // outbound
-        // Creates two listening ports, 5000 and 5001
-        // routes to corresponding names
-        upstreams = [
-          {
-            destination_name = "svc1"
-            destination_peer = "peer-dc2"
-            local_bind_port  = 5000
-          },
-          {
-            destination_name = "svc1"
-            local_bind_port  = 5001
-          }
-        ]
-      }
+      // proxy {
+      //   // outbound
+      //   // Creates two listening ports, 5000 and 5001
+      //   // routes to corresponding names
+      //   upstreams = [
+      //     {
+      //       destination_name = "svc1"
+      //       destination_peer = "peer-dc2"
+      //       local_bind_port  = 5000
+      //     },
+      //     {
+      //       destination_name = "svc1"
+      //       local_bind_port  = 5001
+      //     }
+      //   ]
+      // }
     }
   }
 
@@ -35,4 +35,3 @@ service {
     timeout  = "1s"
   }
 }
-
