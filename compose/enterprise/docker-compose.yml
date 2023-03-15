@@ -12,7 +12,7 @@ services:
     ports:
       - "8500:8500"
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
@@ -29,7 +29,7 @@ services:
       wan:
         ipv4_address: 10.10.10.2
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
@@ -49,7 +49,7 @@ services:
       - "9001:9001" # The service port forwards
       - "19001:19000" # The Envoy ports forwards
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
@@ -69,11 +69,51 @@ services:
       - "9002:9002" # The service port forwards
       - "19003:19000" # The Envoy ports forwards
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: "sh -c '/conf/startsvc.sh /conf/dc1a3.hcl 10.1.10.1:8301 /conf/dc1svc2.hcl dc1-svc2' "
+    command: "sh -c '/conf/startsvc.sh /conf/dc1a3.hcl 10.1.10.1:8301 /conf/dc1svc2.hcl dc1-svc2 ns2' "
+
+  # Service 3 for DC1
+  dc1svc3:
+    image: dev-consul-enterprise
+    container_name: dc1svc3
+    privileged: true
+    networks:
+      dc1:
+        ipv4_address: 10.1.10.5
+      wan:
+        ipv4_address: 10.10.10.5
+    ports:
+      - "9006:9002" # The service port forwards
+      - "19006:19000" # The Envoy ports forwards
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startsvc.sh /conf/dc1a4.hcl 10.1.10.1:8301 /conf/dc1svc3.hcl dc1-svc3 \"\" pt2 10.1.10.1:8500' "
+
+  # Service 4 for DC1
+  dc1svc4:
+    image: dev-consul-enterprise
+    container_name: dc1svc4
+    privileged: true
+    networks:
+      dc1:
+        ipv4_address: 10.1.10.6
+      wan:
+        ipv4_address: 10.10.10.6
+    ports:
+      - "9007:9002" # The service port forwards
+      - "19007:19000" # The Envoy ports forwards
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startsvc.sh /conf/dc1a5.hcl 10.1.10.1:8301 /conf/dc1svc4.hcl dc1-svc4 ns2 pt2 10.1.10.1:8500' "
 
 
   # Datacenter 2 (DC2)
@@ -89,7 +129,7 @@ services:
     ports:
       - "9500:8500"
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
@@ -107,7 +147,7 @@ services:
     ports:
       - "19002:19000"
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
@@ -123,11 +163,80 @@ services:
       wan:
         ipv4_address: 10.10.20.3
     volumes:
-      - ../../license/:/license/
+      - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.2.10.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
+
+  # Datacenter 3 (DC2)
+  dc3s1:
+    image: dev-consul-enterprise
+    container_name: dc3s1
+    privileged: true
+    networks:
+      dc3:
+        ipv4_address: 10.3.10.1
+      wan:
+        ipv4_address: 10.10.30.1
+    ports:
+      - "7500:8500"
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "consul agent -dev -bind=10.3.10.1 -config-file=/conf/dc3s1.hcl"
+
+  mgw3:
+    image: dev-consul-enterprise
+    container_name: dc3mgw1
+    privileged: true
+    networks:
+      dc3:
+        ipv4_address: 10.3.10.2
+      wan:
+        ipv4_address: 10.10.30.2
+    ports:
+      - "19004:19000"
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startgw.sh /conf/dc3a1.hcl 10.3.10.1:8301 10.10.30.2' "
+
+  dc3svc1:
+    image: dev-consul-enterprise
+    container_name: dc3svc1
+    privileged: true
+    networks:
+      dc3:
+        ipv4_address: 10.3.10.3
+      wan:
+        ipv4_address: 10.10.30.3
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startsvc.sh /conf/dc3a2.hcl 10.3.10.1:8301 /conf/dc3svc1.hcl dc3-svc1' "
+
+  dc3svc2:
+    image: dev-consul-enterprise
+    container_name: dc3svc2
+    privileged: true
+    networks:
+      dc3:
+        ipv4_address: 10.3.10.4
+      wan:
+        ipv4_address: 10.10.30.4
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startsvc.sh /conf/dc3a3.hcl 10.3.10.1:8301 /conf/dc3svc2.hcl dc3-svc2 ns2' "
 
 networks:
   dc1:
@@ -140,6 +249,11 @@ networks:
     ipam:
       config:
         - subnet: 10.2.0.0/16
+  dc3:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.3.0.0/16
   wan:
     driver: bridge
     ipam:

@@ -13,13 +13,9 @@ service {
         upstreams = [
           {
             destination_name = "svc1"
-            destination_peer = "peer-dc2"
+            destination_peer = "peer-dc1"
             local_bind_port  = 5000
           },
-          {
-            destination_name = "svc1"
-            local_bind_port  = 5002
-          }
         ]
       }
     }
@@ -36,4 +32,3 @@ service {
     timeout  = "1s"
   }
 }
-
