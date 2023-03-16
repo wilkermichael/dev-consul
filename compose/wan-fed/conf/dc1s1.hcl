@@ -5,8 +5,7 @@ node_name = "dc1s1"
 server = true
 log_level = "INFO"
 data_dir = "/consul-data"
-
-client_addr = "0.0.0.0"
+bootstrap_expect = 1
 
 ports {
 	dns = 8600
@@ -16,11 +15,6 @@ ports {
 	serf_lan = 8301
 	serf_wan = 8302
 	server = 8300
-}
-
-connect {
-  enabled = true
-  enable_mesh_gateway_wan_federation = true
 }
 
 // Configuration entries can be created to provide cluster-wide defaults for various aspects of Consul.

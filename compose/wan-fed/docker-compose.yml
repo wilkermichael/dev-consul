@@ -16,24 +16,7 @@ services:
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: consul agent -dev -config-file=/conf/dc1s1.hcl
-
-  # Mesh Gateway for DC1
-  mgw1:
-    image: dev-consul-enterprise
-    container_name: dc1mgw1
-    privileged: true
-    networks:
-      dc1:
-        ipv4_address: 10.1.10.2
-      wan:
-        ipv4_address: 10.10.10.2
-    volumes:
-      - ../../secrets/:/license/
-      - ./conf/:/conf/
-    environment:
-      CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: sh -c '/conf/startgw.sh /conf/dc1a1.hcl 10.1.10.1:8301 10.10.10.2:8443 10.1.10.2:8443'
+    command: consul agent -bind 10.10.10.1 -serf-wan-bind 10.10.10.1 -advertise-wan 10.10.10.1 -client 10.1.10.1 -dev -config-file=/conf/dc1s1.hcl -retry-join-wan 10.10.20.1
 
 #  # Service for DC1
 #  dc1svc1:
@@ -72,25 +55,7 @@ services:
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: consul agent -config-file=/conf/dc2s1.hcl
-
-  mgw2:
-    image: dev-consul-enterprise
-    container_name: dc2mgw1
-    privileged: true
-    networks:
-      dc2:
-        ipv4_address: 10.2.10.2
-      wan:
-        ipv4_address: 10.10.20.2
-    ports:
-      - "19002:19000"
-    volumes:
-      - ../../secrets/:/license/
-      - ./conf/:/conf/
-    environment:
-      CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: sh -c '/conf/startgw.sh /conf/dc2a1.hcl 10.2.10.1:8301 10.10.20.2:8443 10.2.10.2:8443'
+    command: consul agent -bind 10.10.20.1 -serf-wan-bind 10.10.20.1 -advertise-wan 10.10.20.1 -client 10.2.10.1 -config-file=/conf/dc2s1.hcl -retry-join-wan 10.10.10.1
 #
 #  dc2svc1:
 #    image: dev-consul-enterprise

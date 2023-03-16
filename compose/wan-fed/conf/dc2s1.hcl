@@ -4,8 +4,8 @@ primary_datacenter = "dc1"
 node_name = "dc2s1"
 server = true
 log_level = "INFO"
-
-client_addr = "0.0.0.0"
+data_dir = "/consul-data"
+bootstrap_expect = 1
 
 ports {
 	dns = 8600
@@ -15,11 +15,6 @@ ports {
 	serf_lan = 8301
 	serf_wan = 8302
 	server = 8300
-}
-
-connect {
-  enabled = true
-  enable_mesh_gateway_wan_federation = true
 }
 
 config_entries {
