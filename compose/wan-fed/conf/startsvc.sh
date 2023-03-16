@@ -21,7 +21,7 @@ else
 fi
 
 # Start the agent
-consul agent -bind '{{ GetInterfaceIP "eth0" }}' -serf-wan-bind '{{ GetInterfaceIP "eth1" }}' -config-file="$agentConfigVar" -retry-join="$retryJoinVar" &
+consul agent -bind '{{ GetInterfaceIP "eth1" }}' -config-file="$agentConfigVar" -retry-join="$retryJoinVar" &
 sleep 10
 forwardsrv 0.0.0.0:9001 "$serviceNameVar" &
 
