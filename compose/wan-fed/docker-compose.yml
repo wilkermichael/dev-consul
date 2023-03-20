@@ -4,6 +4,7 @@ services:
     image: dev-consul-enterprise
     container_name: dc1s1
     privileged: true
+    restart: unless-stopped
     networks:
       dc1:
         ipv4_address: ${SRV_1_LAN}
@@ -16,11 +17,12 @@ services:
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: consul agent -bind '{{ GetInterfaceIP "eth1" }}' -client '{{ GetInterfaceIP "eth0" }}' -dev -config-file=/conf/dc1s1.hcl -retry-join-wan ${SRV_2_WAN}
+    command: consul agent -dev -bind '{{ GetInterfaceIP "eth1" }}' -client '{{ GetInterfaceIP "eth0" }}' -config-file=/conf/dc1s1.hcl -retry-join-wan ${SRV_2_WAN}
 
   # Service for DC1
   dc1svc1:
     image: dev-consul-enterprise
+    restart: unless-stopped
     container_name: dc1svc1
     privileged: true
     networks:
@@ -41,6 +43,7 @@ services:
   # Datacenter 2 (DC2)
   dc2s1:
     image: dev-consul-enterprise
+    restart: unless-stopped
     container_name: dc2s1
     privileged: true
     networks:
@@ -59,6 +62,7 @@ services:
 
   dc2svc1:
     image: dev-consul-enterprise
+    restart: unless-stopped
     container_name: dc2svc1
     privileged: true
     networks:
