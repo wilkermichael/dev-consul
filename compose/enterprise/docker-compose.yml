@@ -17,6 +17,7 @@ services:
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
     command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    #command: "dlv --headless --listen=:40000 --accept-multiclient --continue --api-version=2 exec /usr/local/bin/consul -- agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
 
   # Mesh Gateway for DC1
   mgw1:
