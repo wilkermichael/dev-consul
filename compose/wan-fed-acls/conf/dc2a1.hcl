@@ -15,9 +15,3 @@ ports {
 	serf_wan = 8302
 	server = 8300
 }
-
-acl = {
-	enabled = true
-	default_policy = "deny"
-	enable_token_persistence = true
-}

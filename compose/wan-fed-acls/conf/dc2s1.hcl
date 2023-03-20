@@ -24,6 +24,8 @@ acl = {
 
   tokens = {
     initial_management = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
+    agent = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
+    default = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
   }
 }
 
@@ -58,10 +60,4 @@ config_entries {
       }
     }
   }
-}
-
-acl = {
-  enabled = true
-  default_policy = "allow"
-  enable_token_persistence = true
 }
