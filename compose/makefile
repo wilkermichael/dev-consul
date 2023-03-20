@@ -16,6 +16,12 @@ wan-fed:
 wan-fed-down:
 	@cd wan-fed; docker-compose down
 
+wan-fed-acls:
+	@cd wan-fed-acls; docker-compose up
+
+wan-fed-acls-down:
+	@cd wan-fed-acls; docker-compose down
+
 oss:
 	@cd oss; docker-compose up -d; ./peer.sh
 
@@ -28,4 +34,4 @@ oss-image:
 enterprise-image:
 	./build-image.sh enterprise
 
-.PHONY: enterprise oss wan-fed enterprise-acls enterprise-image oss-image enterprise-down oss-down wan-fed-down enterprise-acls-down
+.PHONY: enterprise oss wan-fed wan-fed-acls enterprise-acls enterprise-image oss-image enterprise-down oss-down wan-fed-down enterprise-acls-down wan-fed-acls-down
