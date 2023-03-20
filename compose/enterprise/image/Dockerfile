@@ -1,5 +1,8 @@
-FROM ubuntu:22.04
+FROM golang:1.20.1-buster
 RUN apt-get update && apt-get install -y iptables curl
+
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+
 ENV ENVOY_VERSION_STRING=1.23.1
 #ENV FUNC_E_PLATFORM=linux/amd64
 RUN curl -L https://func-e.io/install.sh | bash -s -- -b /usr/local/bin

@@ -6,12 +6,10 @@
 * If using enterprise copy a license (license.txt) to the license directory at the root of this repo
 
 ## Running
-* go to the compose dir
-* run `./build-image.sh oss` or `./build-image.sh enterprise` if you need to build a new Consul image
-* run
-  * docker compose down to delete the old env
-  * docker compose up to create a new one
-* run ./peer.sh in the OSS or Enterprise directory to setup the peering connections
+* run `make oss-image` or `make enterprise-image` if you need to build a new Consul image
+* run the make target for the system/compose you want to bring up. Make targets are named after the directory with the docker-compose in it, for example `enterprise`
+  * `make enterprise-down` to make sure everything is fresh (runs `docker-compose down` from the enterprise directory`)
+  * `make enterprise` to bring up the system (runs `docker-compose up` and `peer.sh` from the enterprise directory)
 
 # Talking to a service
 * A service runs on exposed port 9001, this allows you to connect to the cluster
