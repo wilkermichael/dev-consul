@@ -43,6 +43,16 @@ config_entries {
     }
   }
 
+  bootstrap {
+    Kind = "sameness-group"
+    Name = "sg1"
+    IncludeLocal = true
+    Members = [
+      { Partition = "pt2" },
+      { Peer = "peer-dc2" },
+    ]
+  }
+
   // exported-services allows for exporting services to other clusters
   // This exports svc1 to the cluster with peering connection named peer-dc1
   bootstrap {

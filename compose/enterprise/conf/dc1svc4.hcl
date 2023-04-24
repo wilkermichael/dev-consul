@@ -4,6 +4,7 @@ service {
   port = 9001
   namespace = "ns2"
   partition = "pt2"
+  id = "dc1-svc4"
 
   connect {
     sidecar_service {

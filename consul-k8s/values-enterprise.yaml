@@ -1,8 +1,8 @@
 # Configure global settings in this section.
 global:
   name: consul
-  image: hashicorppreview/consul-enterprise:1.15-dev
-  imageK8S: "wilko1989/consul-k8s-control-plane-dev@sha256:281d129588865e77dabaacb4698b7916ae18cf6de50bbe5fdb6f33d4c5927e22"
+  image: "wilko1989/consul-enterprise@sha256:48204093309c057b615731bdd63603cca16f1ee789bcc4521d76e62545d2e41f"
+  imageK8S: "wilko1989/consul-k8s-control-plane-dev@sha256:624b837c7eec6dde553dbf176c08d9021b5ed98831f94ca7f5b63a0175795797"
   enterpriseLicense:
     secretName: 'consul-ent-license'
     secretKey: 'key'

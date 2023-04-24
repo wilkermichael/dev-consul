@@ -46,6 +46,16 @@ config_entries {
     ]
   }
 
+  bootstrap {
+    Kind = "sameness-group"
+    Name = "sg1"
+    IncludeLocal = true
+    Members = [
+      { Partition = "pt2" },
+      { Peer = "peer-dc2" },
+    ]
+  }
+
   // service-resolver controls which service instances should satisfy Connect
   // upstream discovery requests for a given service name.
   // This defines the failover of svc1 to svc1 on peer-dc2

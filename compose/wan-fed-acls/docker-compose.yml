@@ -19,27 +19,28 @@ services:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
     command: consul agent -dev -bind '{{ GetInterfaceIP "eth1" }}' -client '{{ GetInterfaceIP "eth0" }}' -config-file=/conf/dc1s1.hcl -retry-join-wan ${SRV_2_WAN}
 
-#  # Service for DC1
-#  dc1svc1:
-#    image: dev-consul-enterprise
-#    restart: unless-stopped
-#    container_name: dc1svc1
-#    privileged: true
-#    networks:
-#      dc1:
-#        ipv4_address: 10.1.10.3
-#      wan:
-#        ipv4_address: 10.10.10.3
-#    ports:
-#      - "9001:9001" # The service port forwards
-#      - "19001:19000" # The Envoy ports forwards
-#    volumes:
-#      - ../../secrets/:/license/
-#      - ./conf/:/conf/
-#    environment:
-#      CONSUL_LICENSE_PATH: /license/consul_license.txt
-#    command: "sh -c '/conf/startsvc.sh /conf/dc1a2.hcl 10.10.10.1:8301 /conf/dc1svc1.hcl dc1-svc1' "
-#
+  # Service for DC1
+  dc1svc1:
+    image: dev-consul-enterprise
+    restart: unless-stopped
+    container_name: dc1svc1
+    privileged: true
+    networks:
+      dc1:
+        ipv4_address: 10.1.10.3
+      wan:
+        ipv4_address: 10.10.10.3
+    ports:
+      - "9001:9001" # The service port forwards
+      - "19001:19000" # The Envoy ports forwards
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+      CONSUL_HTTP_TOKEN: 1307a1a3-e031-6b29-51c3-d3a22fcb1121
+    command: "sh -c '/conf/startsvc.sh /conf/dc1a2.hcl 10.10.10.1:8301 /conf/dc1svc1.hcl dc1-svc1' "
+
   # Datacenter 2 (DC2)
   dc2s1:
     image: dev-consul-enterprise
@@ -58,44 +59,47 @@ services:
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
+      CONSUL_HTTP_TOKEN: 1307a1a3-e031-6b29-51c3-d3a22fcb1121
     command: consul agent -bind '{{ GetInterfaceIP "eth1" }}' -client '{{ GetInterfaceIP "eth0" }}' -config-file=/conf/dc2s1.hcl -retry-join-wan ${SRV_1_WAN}
 
-#  dc2svc1:
-#    image: dev-consul-enterprise
-#    restart: unless-stopped
-#    container_name: dc2svc1
-#    privileged: true
-#    networks:
-#      dc2:
-#        ipv4_address: 10.2.10.3
-#      wan:
-#        ipv4_address: 10.10.20.3
-#    volumes:
-#      - ../../secrets/:/license/
-#      - ./conf/:/conf/
-#    environment:
-#      CONSUL_LICENSE_PATH: /license/consul_license.txt
-#    command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.10.20.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
+  dc2svc1:
+    image: dev-consul-enterprise
+    restart: unless-stopped
+    container_name: dc2svc1
+    privileged: true
+    networks:
+      dc2:
+        ipv4_address: 10.2.10.3
+      wan:
+        ipv4_address: 10.10.20.3
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+      CONSUL_HTTP_TOKEN: 1307a1a3-e031-6b29-51c3-d3a22fcb1121
+    command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.10.20.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
 
-#  # Service 2 for DC1
-#  dc2svc2:
-#    image: dev-consul-enterprise
-#    container_name: dc2svc2
-#    privileged: true
-#    networks:
-#      dc2:
-#        ipv4_address: 10.2.10.4
-#      wan:
-#        ipv4_address: 10.10.20.4
-#    ports:
-#      - "9002:9002" # The service port forwards
-#      - "19003:19000" # The Envoy ports forwards
-#    volumes:
-#      - ../../secrets/:/license/
-#      - ./conf/:/conf/
-#    environment:
-#      CONSUL_LICENSE_PATH: /license/consul_license.txt
-#    command: "sh -c '/conf/startsvc.sh /conf/dc2a3.hcl 10.10.20.1:8301 /conf/dc2svc2.hcl dc2-svc2 ns2' "
+  # Service 2 for DC1
+  dc2svc2:
+    image: dev-consul-enterprise
+    container_name: dc2svc2
+    privileged: true
+    networks:
+      dc2:
+        ipv4_address: 10.2.10.4
+      wan:
+        ipv4_address: 10.10.20.4
+    ports:
+      - "9002:9002" # The service port forwards
+      - "19003:19000" # The Envoy ports forwards
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+      CONSUL_HTTP_TOKEN: 1307a1a3-e031-6b29-51c3-d3a22fcb1121
+    command: "sh -c '/conf/startsvc.sh /conf/dc2a3.hcl 10.10.20.1:8301 /conf/dc2svc2.hcl dc2-svc2 ns2' "
 
 networks:
   dc1:

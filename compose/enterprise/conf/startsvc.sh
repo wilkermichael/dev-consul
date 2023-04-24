@@ -45,4 +45,4 @@ else
 fi
 
 consul services register -namespace="$namespaceVar" -partition="$partitionVar" "$serviceConfigVar"
-consul connect envoy -admin-bind=0.0.0.0:19000 -sidecar-for=svc1 -namespace="$namespaceVar" -partition="$partitionVar"
+consul connect envoy -admin-bind=0.0.0.0:19000 -sidecar-for="$serviceNameVar" -namespace="$namespaceVar" -partition="$partitionVar"

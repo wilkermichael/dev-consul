@@ -3,6 +3,7 @@ service {
   name = "svc1" // This is a group name for a type of service
   port = 9001
   namespace = "ns2"
+  id = "dc3-svc2"
 
   connect {
     sidecar_service {
@@ -12,9 +13,9 @@ service {
         // routes to corresponding names
         upstreams = [
           {
-            destination_name = "svc1"
+            destination_name = "dc3-svc2"
             destination_peer = "peer-dc1"
-            local_bind_port  = 5000
+            local_bind_port  = 5001
           },
         ]
       }

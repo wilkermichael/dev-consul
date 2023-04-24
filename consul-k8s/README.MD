@@ -9,7 +9,7 @@
 ### Setup Enterprise
 * Run 
 ```shell
-secret=$(cat ../license/consul_license.txt)
+secret=$(cat ../secrets/consul_license.txt)
 kubectl create secret generic consul-ent-license --from-literal="key=${secret}"
 ````
 

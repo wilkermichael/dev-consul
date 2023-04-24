@@ -1,0 +1,27 @@
+{
+  "services": [
+    {
+      "name": "web",
+      "tags": [
+        "example"
+      ],
+      "port": 80,
+      "id": "web-1"
+    },
+    {
+      "name": "web",
+      "tags": [
+        "example"
+      ],
+      "port": 80,
+      "id": "web-2"
+    },
+    {
+      "name": "api",
+      "tags": [
+        "test"
+      ],
+      "port": 9000
+    }
+  ]
+}

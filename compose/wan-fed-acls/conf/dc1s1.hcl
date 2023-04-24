@@ -26,6 +26,7 @@ acl = {
     initial_management = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
     agent = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
     default = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
+    replication = "1307a1a3-e031-6b29-51c3-d3a22fcb1121"
   }
 }
 

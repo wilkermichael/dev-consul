@@ -2,7 +2,7 @@
 service {
   name = "svc1"
   port = 9001
-  id = "dc2-svc1"
+  id = "dc2-svc2"
 
   connect {
     sidecar_service {
@@ -19,7 +19,7 @@ service {
   }
 
   check {
-    id       = "svc1-check"
+    id       = "svc2-check"
     http     = "http://127.0.0.1:9001/health"
     method   = "GET"
     interval = "10s"

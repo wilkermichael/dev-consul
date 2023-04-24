@@ -3,6 +3,7 @@ service {
   name = "svc1" // This is a group name for a type of service
   port = 9001
   partition = "pt2"
+  id = "dc1-svc3"
 
   connect {
     sidecar_service {

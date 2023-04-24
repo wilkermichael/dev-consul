@@ -11,13 +11,15 @@ services:
         ipv4_address: 10.10.10.1
     ports:
       - "8500:8500"
+      - "8601:8600/udp"
+      - "40000:40000"
     volumes:
       - ../../secrets/:/license/
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
-    #command: "dlv --headless --listen=:40000 --accept-multiclient --continue --api-version=2 exec /usr/local/bin/consul -- agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    #command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    command: "dlv --headless --listen=:40000 --accept-multiclient --continue --api-version=2 exec /usr/local/bin/consul -- agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
 
   # Mesh Gateway for DC1
   mgw1:
@@ -47,6 +49,7 @@ services:
       wan:
         ipv4_address: 10.10.10.3
     ports:
+      - "8600:8600/udp"
       - "9001:9001" # The service port forwards
       - "19001:19000" # The Envoy ports forwards
     volumes:
@@ -169,6 +172,22 @@ services:
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
     command: "sh -c '/conf/startsvc.sh /conf/dc2a2.hcl 10.2.10.1:8301 /conf/dc2svc1.hcl dc2-svc1' "
+
+  dc2svc2:
+    image: dev-consul-enterprise
+    container_name: dc2svc2
+    privileged: true
+    networks:
+      dc2:
+        ipv4_address: 10.2.10.4
+      wan:
+        ipv4_address: 10.10.20.4
+    volumes:
+      - ../../secrets/:/license/
+      - ./conf/:/conf/
+    environment:
+      CONSUL_LICENSE_PATH: /license/consul_license.txt
+    command: "sh -c '/conf/startsvc.sh /conf/dc2a3.hcl 10.2.10.1:8301 /conf/dc2svc2.hcl dc2-svc2' "
 
   # Datacenter 3 (DC2)
   dc3s1:

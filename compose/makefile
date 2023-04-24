@@ -1,11 +1,11 @@
 enterprise:
-	@cd enterprise; docker-compose up -d; ./peer.sh
+	@cd enterprise; docker-compose up -d; sleep 6; ./peer.sh
 
 enterprise-down:
 	@cd enterprise; docker-compose down
 
 enterprise-acls:
-	@cd enterprise-acls; docker-compose up -d; ./peer.sh
+	@cd enterprise-acls; docker-compose up -d; sleep 6; ./peer.sh
 
 enterprise-acls-down:
 	@cd enterprise-acls; docker-compose down

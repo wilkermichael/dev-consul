@@ -2,13 +2,14 @@
 service {
   name = "svc1"
   port = 9001
+  id = "dc3-svc1"
 
   connect {
     sidecar_service {
       proxy {
         upstreams = [
           {
-            destination_name = "svc1"
+            destination_name = "dc3-svc1"
             destination_peer = "peer-dc1"
             local_bind_port  = 5000
           },

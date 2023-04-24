@@ -20,7 +20,7 @@ done
 
 # Set the path to the Consul directory
 # consuldir=~/dev/consul
-consuldir=~/dev/consul
+consuldir=~/dev/consul-enterprise
 consulK8sdir=~/dev/consul-k8s
 
 # Build the docker images
@@ -29,8 +29,8 @@ make -C $consulK8sdir control-plane-dev-docker
 
 # Push and tag the image if the push argument is present
 if [ "$push" = true ] ; then
-  docker tag consul:local wilko1989/consul:latest
-  docker push wilko1989/consul:latest
+  docker tag consul:local wilko1989/consul-enterprise:latest
+  docker push wilko1989/consul-enterprise:latest
 
   docker tag consul-k8s-control-plane-dev wilko1989/consul-k8s-control-plane-dev:latest
   docker push wilko1989/consul-k8s-control-plane-dev:latest
