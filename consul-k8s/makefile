@@ -26,7 +26,7 @@ enterprise-no-build: load-secret
 
 cleanup:
 	helm del --debug consul; kubectl delete pvc -l release=consul; \
-    kubectl delete secret consul-ent-license
+	kubectl delete secret consul-ent-license
 
 create-cluster:
 	kind create cluster --image kindest/node:$(KUBERNETES_VERSION) --name=dc1
