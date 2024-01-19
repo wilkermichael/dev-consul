@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 export CONSUL_HTTP_TOKEN=1307a1a3-e031-6b29-51c3-d3a22fcb1121
 

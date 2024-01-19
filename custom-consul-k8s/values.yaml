@@ -1,0 +1,20 @@
+# Configure global settings in this section.
+global:
+  name: consul
+  image: hashicorp/consul-enterprise:1.13-ent
+  imageK8S: wilko1989/consul-k8s:01-18-2023-compat-1.13
+# Configure your Consul servers in this section.
+server:
+  # Specify three servers that wait until all are healthy to bootstrap the Consul cluster.
+  replicas: 1
+  enterpriseLicense:
+    secretName: 'consul-ent-license'
+    secretKey: 'key'
+# Enable and configure the Consul UI.
+ui:
+  enabled: true
+# Enable Consul connect pod injection
+connectInject:
+  enabled: true
+controller:
+  enabled: true

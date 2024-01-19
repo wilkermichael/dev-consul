@@ -20,10 +20,15 @@ config_entries {
   bootstrap {
     kind = "proxy-defaults"
     name = "global"
-
     config {
       protocol = "http"
     }
+  }
+
+  bootstrap {
+    kind = "service-defaults"
+    name = "global"
+    protocol = "http"
   }
 
   bootstrap {

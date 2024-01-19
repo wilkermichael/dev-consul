@@ -18,8 +18,8 @@ services:
       - ./conf/:/conf/
     environment:
       CONSUL_LICENSE_PATH: /license/consul_license.txt
-    #command: "consul agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
-    command: "dlv --headless --listen=:40000 --accept-multiclient --continue --api-version=2 exec /usr/local/bin/consul -- agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
+    command: "bash -c '/conf/startServer.sh 10.1.10.1 /conf/dc1s1.hcl pt2' "
+    #command: "dlv --headless --listen=:40000 --accept-multiclient --continue --api-version=2 exec /usr/local/bin/consul -- agent -dev -bind=10.1.10.1 -config-file=/conf/dc1s1.hcl"
 
   # Mesh Gateway for DC1
   mgw1:
@@ -90,7 +90,7 @@ services:
       wan:
         ipv4_address: 10.10.10.5
     ports:
-      - "9006:9002" # The service port forwards
+      - "9006:9001" # The service port forwards
       - "19006:19000" # The Envoy ports forwards
     volumes:
       - ../../secrets/:/license/

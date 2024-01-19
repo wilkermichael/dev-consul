@@ -33,6 +33,12 @@ config_entries {
     }
   }
 
+  bootstrap {
+    kind = "service-defaults"
+    name = "global"
+    protocol = "http"
+  }
+
   // exported-services allows for exporting services to other clusters
   // This exports svc1 to the cluster with peering connection named peer-dc1
   bootstrap {
@@ -50,6 +56,7 @@ config_entries {
     Kind = "sameness-group"
     Name = "sg1"
     IncludeLocal = true
+    DefaultForFailover = true
     Members = [
       { Partition = "pt2" },
       { Peer = "peer-dc2" },
@@ -59,24 +66,4 @@ config_entries {
   // service-resolver controls which service instances should satisfy Connect
   // upstream discovery requests for a given service name.
   // This defines the failover of svc1 to svc1 on peer-dc2
-  bootstrap {
-    kind = "service-resolver"
-    name = "svc1" // alias of the service we redefine behavior for
-
-    // This occurs after the default failovers which will select from
-    // services matching svc1 in the local cluster
-    // id=svc 1/id=svc 2 50/50
-    // id=svc1 goes downs -> id=svc2 100% of traffic
-    // id=svc2 goes down -> svc1-peer-dc2 gets traffic
-
-    // id=svc1 goes down -> svc1-peer-dc2 get all the traffic
-    failover = {
-      "*" = {
-        targets = [{
-          service="svc1"
-          peer = "peer-dc2"
-        }]
-      }
-    }
-  }
 }

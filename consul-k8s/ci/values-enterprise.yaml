@@ -1,8 +1,9 @@
 # Configure global settings in this section.
 global:
   name: consul
-  image: "wilko1989/consul-enterprise@sha256:48204093309c057b615731bdd63603cca16f1ee789bcc4521d76e62545d2e41f"
-  imageK8S: "wilko1989/consul-k8s-control-plane-dev@sha256:624b837c7eec6dde553dbf176c08d9021b5ed98831f94ca7f5b63a0175795797"
+  image: wilko1989/consul-dev@sha256:c2c24ff1a37573815fe81c3a04c36bc1046fa95e0591f2c30920b539a4d8b756
+  imageK8S: wilko1989/consul-k8s-control-plane-dev@sha256:2da776f5ec39ab916f36566e2f5f1aa98557a4bd79a9846a2998d62cf7329492
+  imageConsulDataplane: wilko1989/consul-dataplane@sha256:63e3dd069e767d764907e97f90e25dc2fa27ecec189f8d249a3dfadf0f8700d5
   enterpriseLicense:
     secretName: 'consul-ent-license'
     secretKey: 'key'

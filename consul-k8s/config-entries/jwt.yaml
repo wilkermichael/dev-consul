@@ -1,0 +1,31 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: JWTProvider
+metadata:
+  name: hello5
+spec:
+  issuer: auth0
+  jsonWebKeySet:
+    remote:
+      uri: "https://example.com/.well-known/jwks.json"
+      requestTimeoutMs: 1500
+      fetchAsynchronously: true
+      retryPolicy:
+        numRetries: 2
+      jwksCluster:
+        discoveryType: "STRICT_DNS"
+        tlsCertificates:
+          caCertificateProviderInstance:
+            instanceName: "InstanceName"
+            certificateName: "ROOTCA"
+  audiences: [ "<audience>" ] # if specified, at least one must match
+  locations:
+    - header:
+        name: Authorization
+        valuePrefix: Bearer
+        forward: false
+  forwarding:
+    headerName: X-Consul-Jwt
+    padForwardPayloadHeader: false
+  clockSkewSeconds: 30
+  cacheConfig:
+    size: 100

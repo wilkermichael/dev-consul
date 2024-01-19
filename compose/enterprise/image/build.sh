@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 # Update this directory if your path to the consul source code changes

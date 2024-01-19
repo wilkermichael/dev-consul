@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y iptables curl
 
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
-ENV ENVOY_VERSION_STRING=1.23.1
+ENV ENVOY_VERSION_STRING=1.24.9
 #ENV FUNC_E_PLATFORM=linux/amd64
 RUN curl -L https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
 RUN func-e use $ENVOY_VERSION_STRING

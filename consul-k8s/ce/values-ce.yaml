@@ -1,0 +1,16 @@
+# Configure global settings in this section.
+global:
+  name: consul
+  image: wilko1989/consul-dev@sha256:c2c24ff1a37573815fe81c3a04c36bc1046fa95e0591f2c30920b539a4d8b756
+  imageK8S: wilko1989/consul-k8s-control-plane-dev@sha256:ed692cbd1452dc26d65674637d8e48c6a7f8d7235b8eb3301d996a4a44762229
+  imageConsulDataplane: wilko1989/consul-dataplane@sha256:63e3dd069e767d764907e97f90e25dc2fa27ecec189f8d249a3dfadf0f8700d5
+# Configure your Consul servers in this section.
+server:
+  # Specify three servers that wait until all are healthy to bootstrap the Consul cluster.
+  replicas: 1
+# Enable and configure the Consul UI.
+ui:
+  enabled: true
+# Enable Consul connect pod injection
+connectInject:
+  enabled: true

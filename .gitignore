@@ -3,3 +3,5 @@ token
 consul
 forwardsrv
 .idea
+consul-k8s
+consul-k8s-control-plane
