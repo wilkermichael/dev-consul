@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-server-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: static-server
+  template:
+    metadata:
+      name: static-server
+      labels:
+        app: static-server
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+        consul.hashicorp.com/service-meta-version: "2"
+        consul.hashicorp.com/service-tags: "v2"
+    spec:
+      containers:
+        - name: static-server
+          # Using alpine vs latest as there is a build issue with M1s. Also other tests in multiport-app reference
+          # alpine so standardizing this.
+          image: docker.mirror.hashicorp.services/hashicorp/http-echo:alpine
+          args:
+            - -text="I am v2"
+            - -listen=:8080
+          ports:
+            - containerPort: 8080
+              name: http
+      serviceAccountName: static-server
+      terminationGracePeriodSeconds: 0 # so deletion is quick
