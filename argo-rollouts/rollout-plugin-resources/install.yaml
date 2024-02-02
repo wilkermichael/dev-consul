@@ -179,19 +179,6 @@ spec:
                             type: object
                           datadog:
                             properties:
-                              aggregator:
-                                default: last
-                                enum:
-                                  - avg
-                                  - min
-                                  - max
-                                  - sum
-                                  - last
-                                  - percentile
-                                  - mean
-                                  - l2norm
-                                  - area
-                                type: string
                               apiVersion:
                                 default: v1
                                 enum:
@@ -3313,19 +3300,6 @@ spec:
                             type: object
                           datadog:
                             properties:
-                              aggregator:
-                                default: last
-                                enum:
-                                  - avg
-                                  - min
-                                  - max
-                                  - sum
-                                  - last
-                                  - percentile
-                                  - mean
-                                  - l2norm
-                                  - area
-                                type: string
                               apiVersion:
                                 default: v1
                                 enum:
@@ -6333,19 +6307,6 @@ spec:
                             type: object
                           datadog:
                             properties:
-                              aggregator:
-                                default: last
-                                enum:
-                                  - avg
-                                  - min
-                                  - max
-                                  - sum
-                                  - last
-                                  - percentile
-                                  - mean
-                                  - l2norm
-                                  - area
-                                type: string
                               apiVersion:
                                 default: v1
                                 enum:
@@ -12706,6 +12667,19 @@ spec:
                                     - name
                                   type: object
                               type: object
+                            consul:
+                              properties:
+                                canarySubsetName:
+                                  type: string
+                                serviceName:
+                                  type: string
+                                stableSubsetName:
+                                  type: string
+                              required:
+                                - canarySubsetName
+                                - serviceName
+                                - stableSubsetName
+                              type: object
                             istio:
                               properties:
                                 destinationRule:
@@ -15762,6 +15736,17 @@ rules:
       - update
       - patch
   - apiGroups:
+      - consul.hashicorp.com
+    resources:
+      - servicesplitters
+      - serviceresolvers
+    verbs:
+      - create
+      - watch
+      - get
+      - update
+      - patch
+  - apiGroups:
       - getambassador.io
       - x.getambassador.io
     resources:
@@ -15932,6 +15917,10 @@ metadata:
     app.kubernetes.io/name: argo-rollouts
     app.kubernetes.io/part-of: argo-rollouts
   name: argo-rollouts-config
+data:
+  trafficRouterPlugins: |-
+    - name: "hashicorp/consul"
+      location: "file:///plugin-bin/hashicorp/rollouts-plugin-trafficrouter-consul"
 ---
 apiVersion: v1
 kind: Secret
@@ -15969,12 +15958,17 @@ spec:
     matchLabels:
       app.kubernetes.io/name: argo-rollouts
   strategy:
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
         app.kubernetes.io/name: argo-rollouts
     spec:
+      volumes:
+         - name: consul-route-plugin
+           hostPath:
+             path: /rollouts-plugin-trafficrouter-consul
+             type: DirectoryOrCreate
       containers:
         - image: wilko1989/argo-rollouts@sha256:3cc8ddd3c2623b74999c506e8436220c9414246e6a52a5c9494e96c24d5b04d2
           imagePullPolicy: Always
@@ -15988,6 +15982,9 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
           name: argo-rollouts
+          volumeMounts:
+             - name: consul-route-plugin
+               mountPath: /plugin-bin/hashicorp
           ports:
             - containerPort: 8090
               name: metrics
